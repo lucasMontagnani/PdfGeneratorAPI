@@ -1,0 +1,6 @@
+@PdfGeneratorAPI_HostAddress = http://localhost:5157
+
+GET {{PdfGeneratorAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,149 @@
+﻿@using System.Globalization
+@using PdfGeneratorAPI.Models
+
+@model PdfGeneratorAPI.Models.InvoiceContract
+
+@{
+    IFormatProvider cultureInfo = CultureInfo.CreateSpecificCulture("en-US");
+    var subtotal = Model.LineItems.Sum(li => li.Price * li.Quantity).ToString("C", cultureInfo);
+    var total = Model.LineItems.Sum(li => li.Price * li.Quantity).ToString("C", cultureInfo);
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .invoice-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+            .invoice-details div {
+                width: 48%;
+            }
+
+            .invoice-details p {
+                margin: 4px 0;
+                color: #555;
+            }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .invoice-table th, .invoice-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .invoice-table th {
+                background: #f4f4f4;
+                font-weight: bold;
+            }
+
+        .invoice-summary {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+            .invoice-summary p {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+        .total {
+            font-size: 18px;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <h1>Invoice #@Model.Number</h1>
+            <p>Issued date: @Model.IssuedDate.ToString("dd/MM/yyyy")</p>
+            <p>Due date: @Model.DueDate.ToString("dd/MM/yyyy")</p>
+        </div>
+
+        <div class="invoice-details">
+            <div>
+                <h3>Seller</h3>
+                <p><strong>@Model.SellerAddress.CompanyName</strong></p>
+                <p>@Model.SellerAddress.Street</p>
+                <p>@Model.SellerAddress.City, @Model.SellerAddress.State</p>
+                <p>Email: @Model.SellerAddress.Email</p>
+            </div>
+            <div>
+                <h3>Bill To</h3>
+                <p><strong>@Model.CustomerAddress.CompanyName</strong></p>
+                <p>@Model.CustomerAddress.Street</p>
+                <p>@Model.CustomerAddress.City, @Model.CustomerAddress.State</p>
+                <p>Email: @Model.CustomerAddress.Email</p>
+            </div>
+        </div>
+
+        <h2>Items</h2>
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ((int index, LineItem item) in Model.LineItems.Select((li, i) => (i + 1, li)))
+                {
+                    <tr>
+                        <td>@index</td>
+                        <td>@item.Name</td>
+                        <td>@item.Price.ToString("C", cultureInfo)</td>
+                        <td>@item.Quantity.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="invoice-summary">
+            <p>Subtotal: @subtotal</p>
+            <p class="total">Total: @total</p>
+        </div>
+    </div>
+
+</body>
+</html>
