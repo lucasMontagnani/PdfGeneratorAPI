@@ -36,3 +36,30 @@ This project explores different ways to generate PDFs for free in a **C# .NET Co
 ### 📊 Comparison & Conclusion
 As a conclusion I’d say that the SelectHtmlToPdf is the best choice if you going to us reports that has up to 5 pages, otherwise OpenHtmlToPdf will be your best option.
 If you are willing to pay, QuestPDF is excellent, otherwise comes with free license restrictions.
+
+### 🚀 Deploy
+When deploying the project through a build and release pipeline, Razor View files (.cshtml) may require additional configuration to ensure they are included in the new environment.
+
+## ✅ Steps to Configure Razor Views:
+
+1. Verify Build Action
+    - Right-click on the .cshtml file, go to Properties, and make sure Build Action is set to "Content".
+2. Modify the .csproj File
+    - Add the following property inside the <PropertyGroup> section:
+      ```xml
+      <PropertyGroup>
+        ...
+        ...
+        <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+      </PropertyGroup>
+3. Install the Required NuGet Package
+     - Run the following command to install Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation:
+       ```sh
+       dotnet add package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
+4. Enable Runtime Compilation
+   - Add the following configuration to the Startup/Program.cs
+     ```csharp
+     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+These steps ensure that Razor Views are properly included during deployment, preventing issues where the application cannot find .cshtml files at runtime.
+Probably the first 2 will be enough to solve this problem.
