@@ -27,6 +27,7 @@ This project explores different ways to generate PDFs for free in a **C# .NET Co
 - Limitation: Struggles with some CSS properties, such as centering elements using display: flex.
 
 ### 📌 SelectHtmlToPdf
+- Istall Select.HtmlToPdf.NetCore package.
 - Convert HTML to PDF with:
   ```csharp
   var converter = new HtmlToPdf();
@@ -40,7 +41,7 @@ If you are willing to pay, QuestPDF is excellent, otherwise comes with free lice
 ### 🚀 Deploy
 When deploying the project through a build and release pipeline, Razor View files (.cshtml) may require additional configuration to ensure they are included in the new environment.
 
-## ✅ Steps to Configure Razor Views:
+#### ✅ Steps to Configure Razor Views:
 
 1. Verify Build Action
     - Right-click on the .cshtml file, go to Properties, and make sure Build Action is set to "Content".
